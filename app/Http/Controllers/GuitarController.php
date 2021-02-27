@@ -16,7 +16,7 @@ class GuitarController extends Controller
      */
     public function index()
     {
-        return GuitarCollection::collection( Guitar::all());
+        return GuitarCollection::collection( Guitar::paginate(20));
     }
 
     /**

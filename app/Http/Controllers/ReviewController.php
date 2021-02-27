@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Review\ReviewResource;
 use App\Model\Guitar;
 use App\Model\Review;
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ class ReviewController extends Controller
      */
     public function index(Guitar $guitar)
     {
-        return $guitar->reviews;
+        return ReviewResource::collection( $guitar->reviews);
     }
 
     /**
