@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GuitarRequest;
 use App\Http\Resources\Guitar\GuitarCollection;
 use App\Http\Resources\Guitar\GuitarResource;
 use App\Model\Guitar;
@@ -14,6 +15,11 @@ class GuitarController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth:api')->except('index', 'show');
+    }
+
     public function index()
     {
         return GuitarCollection::collection( Guitar::paginate(20));
@@ -26,7 +32,7 @@ class GuitarController extends Controller
      */
     public function create()
     {
-        //
+        return "WHOOO";
     }
 
     /**
@@ -35,9 +41,22 @@ class GuitarController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(GuitarRequest $request)
     {
-        //
+        $guitar = new Guitar;
+        $guitar->model = $request->model;
+        $guitar->pickups = $request->pickups;
+        $guitar->body_shape = $request->body_shape;
+        $guitar->string = $request->string;
+
+        $guitar->save();
+
+        return response(
+            [
+                "data"=>new GuitarResource($guitar)
+            ],
+            201
+        );    
     }
 
     /**
@@ -71,7 +90,12 @@ class GuitarController extends Controller
      */
     public function update(Request $request, Guitar $guitar)
     {
-        //
+        $guitar->update($request->all());
+
+        return response(
+            ["data"=>new GuitarResource($guitar)],
+            201
+        );
     }
 
     /**
@@ -82,6 +106,8 @@ class GuitarController extends Controller
      */
     public function destroy(Guitar $guitar)
     {
-        //
+        $guitar->delete();
+
+        return response(null, 204);
     }
 }
