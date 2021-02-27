@@ -7,6 +7,9 @@ use App\Model\Review;
 
 class Guitar extends Model
 {
+    protected $fillable = [
+        "model", "pickups","body_shape", "string"
+    ];
     public function reviews()
     {
         return $this->hasMany(Review::class);
