@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GuitarRequest extends FormRequest
+class ReviewRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,8 @@ class GuitarRequest extends FormRequest
     public function rules()
     {
         return [
-            'model' => "required|max:255|unique:guitars",
-            'pickups' => "required|max:20",
-            'body_shape' => "required|max:20",
-            'string' => "required|max:10",
+            'review' => "required",
+            'star' => "required|integer|between:0,5"
         ];
     }
 }

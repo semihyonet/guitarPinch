@@ -1,5 +1,6 @@
 <?php
 
+use App\User;
 use Faker\Generator as Faker;
 
 $factory->define(App\Model\Guitar::class, function (Faker $faker) {
@@ -7,6 +8,10 @@ $factory->define(App\Model\Guitar::class, function (Faker $faker) {
         "model"=> $faker->word(1),
         "pickups"=> (random_int(0,1)==1)?"SSS":"HS",
         "body_shape"=> $faker->name,
-        "string"=> random_int(6,9)
+        "string"=> random_int(6,9),
+        "user_id"=> function() 
+        {
+            return User::all()->random();
+        }
     ];
 });

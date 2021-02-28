@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\GuitarNotBelongsToUser;
 use App\Http\Requests\GuitarRequest;
 use App\Http\Resources\Guitar\GuitarCollection;
 use App\Http\Resources\Guitar\GuitarResource;
 use App\Model\Guitar;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class GuitarController extends Controller
 {
@@ -48,6 +50,7 @@ class GuitarController extends Controller
         $guitar->pickups = $request->pickups;
         $guitar->body_shape = $request->body_shape;
         $guitar->string = $request->string;
+        $guitar->user_id = Auth::id();
 
         $guitar->save();
 
@@ -90,6 +93,8 @@ class GuitarController extends Controller
      */
     public function update(Request $request, Guitar $guitar)
     {
+        
+        $this->checkIfBelongsToUser($guitar);
         $guitar->update($request->all());
 
         return response(
@@ -106,8 +111,18 @@ class GuitarController extends Controller
      */
     public function destroy(Guitar $guitar)
     {
+        $this->checkIfBelongsToUser($guitar);
+
         $guitar->delete();
 
         return response(null, 204);
+    }
+
+    public function checkIfBelongsToUser(Guitar $guitar)
+    {
+        if ($guitar->user_id !== Auth::id())
+        {
+            throw new GuitarNotBelongsToUser();
+        }
     }
 }

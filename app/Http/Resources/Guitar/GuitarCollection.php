@@ -16,7 +16,7 @@ class GuitarCollection extends Resource
     {  
         return [
             "model"=> $this->model,
-            "rating"=> ($this->reviews->count() > 0)? round($this->reviews->sum("star") / $this->reviews->count(),2 ): 0,
+            "rating"=> ($this->reviews->count() > 0)? round($this->reviews->sum("star") / $this->reviews->count(),2 ): -1,
             "href"=> [
                 "link"=>route('guitars.show',$this->id)
             ]
