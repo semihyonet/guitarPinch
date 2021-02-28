@@ -19,6 +19,7 @@ class CreateGuitarsTable extends Migration
             $table->string('pickups');
             $table->string('body_shape');
             $table->integer('string');
+            $table->integer("user_id")->unsigned()->index();
             $table->timestamps();
         });
     }

@@ -27,11 +27,6 @@ trait ExceptionTrait
             );
         }
         
-        return Response(
-            ["errors"=> "Undefined ERROR",
-            "code"=> $e
-        ],
-            404
-        );
+        return parent::render($request,$e);
     }
 }
